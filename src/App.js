@@ -4,7 +4,7 @@ import {useState, useEffect} from "react"
 export default function App() {
     const [categories, setCategories] = useState([])
     const [items, setItems] = useState([]);
-    // const [newCat, setNewCat] = useState([]);
+
     useEffect(()=> {
         fetch ("http://localhost:3001/categories")
         .then (response => response.json())
@@ -15,32 +15,40 @@ export default function App() {
         .then (response => response.json())
         .then (itemData => {setItems(itemData)})
     }, [])
+    useEffect(()=> {
+        fetch ("http://localhost:3001/items/id")
+        .then (response => response.json())
+        // .then ???
+    }, [])
     
     return (
         <div>
-            <h1> My Categories</h1>
+            <h1 style={{color: 'blue'}}> My Selection</h1>
+            <hr></hr>
+            {/* ??? */}
+            <hr></hr>
+
+            <h1 style={{color: 'blue'}}> My Categories</h1>
+            <hr></hr>
             {categories.map(category => (
                 <p>
                     {"Category " + category.id + " = " + category.name}
                 </p>
             )
             )} 
-            {/* {setNewCat(categories.filter((x) => x.id === 2))} */}
-            
-            <h1> My Items</h1>
+            <hr></hr>
+
+            <h1 style={{color: 'blue'}}> My Items</h1>
+            <hr></hr>
             {items.map(item => (
-                <p>
-                    {item.name + ", Price: "}
-                    {item.price + ". Description: "}
-                    {item.description + "; Category: "}
-                    {/* {item.category_id} */}
-                    {categories[item.category_id]}
-                    {/* What I really want: equivalent sql query}
-                    {SELECT categories.name
-                    FROM categories 
-                    INNER JOIN items
-                    ON items.category_id = categories.id} */}
-                </p>
+                <>
+                    <p style={{color: 'red'}}>{"My item number: " + item.id}</p>
+                    <p>{"Name: " + item.name}</p>
+                    <p>{"Price: " + item.price}</p>
+                    <p>{"Description: " + item.description}</p>
+                    <p>{"Category: " + item.category.name}</p>
+                    <hr></hr>
+                </>
             )
             )}      
         </div>
